@@ -1,10 +1,36 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput, Text } from "react-native";
 
 import СalculatorButton from "../../components/СalculatorButton/СalculatorButton";
 
 const Calculator = () => {
     const [calculationLine, setCalculationLine] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const addSymbol = (value) => {
+        setErrorMessage("");
+        setCalculationLine(calculationLine + value);
+    }
+
+    const eraseSymbol = () => {
+        setErrorMessage("");
+        setCalculationLine(calculationLine.substring(0, calculationLine.length - 1));
+    }
+
+    const clearCalculationLine = () => {
+        setErrorMessage("");
+        setCalculationLine("");
+    }
+
+    const calculate = () => {
+        try {
+            const result = eval(calculationLine);
+            setCalculationLine(result.toString());
+        }
+        catch (e) {
+            setErrorMessage("Ошибка! Строка расчета указана неверно!");
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -14,94 +40,94 @@ const Calculator = () => {
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"7"}
-                        onTouchablePressed={() => console.log("Button 7 has pressed")}
+                        onTouchablePressed={() => addSymbol("7")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"8"}
-                        onTouchablePressed={() => console.log("Button 8 has pressed")}
+                        onTouchablePressed={() => addSymbol("8")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"9"}
-                        onTouchablePressed={() => console.log("Button 9 has pressed")}
+                        onTouchablePressed={() => addSymbol("9")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"4"}
-                        onTouchablePressed={() => console.log("Button 4 has pressed")}
+                        onTouchablePressed={() => addSymbol("4")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"5"}
-                        onTouchablePressed={() => console.log("Button 5 has pressed")}
+                        onTouchablePressed={() => addSymbol("5")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"6"}
-                        onTouchablePressed={() => console.log("Button 6 has pressed")}
+                        onTouchablePressed={() => addSymbol("6")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"1"}
-                        onTouchablePressed={() => console.log("Button 1 has pressed")}
+                        onTouchablePressed={() => addSymbol("1")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"2"}
-                        onTouchablePressed={() => console.log("Button 2 has pressed")}
+                        onTouchablePressed={() => addSymbol("2")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"3"}
-                        onTouchablePressed={() => console.log("Button 3 has pressed")}
+                        onTouchablePressed={() => addSymbol("3")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"."}
-                        onTouchablePressed={() => console.log("Button . has pressed")}
+                        onTouchablePressed={() => addSymbol(".")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"0"}
-                        onTouchablePressed={() => console.log("Button 0 has pressed")}
+                        onTouchablePressed={() => addSymbol("0")}
                     />
                     <СalculatorButton
                         btnStyle={styles.numericButtons}
                         btnText={"<"}
-                        onTouchablePressed={() => console.log("Button < has pressed")}
+                        onTouchablePressed={() => eraseSymbol("<")}
                     />
                 </View>
                 <View style={styles.rightSide}>
                     <СalculatorButton
                         btnStyle={styles.actionButtons}
                         btnText={"+"}
-                        onTouchablePressed={() => console.log("Button + has pressed")}
+                        onTouchablePressed={() => addSymbol("+")}
                     />
                     <СalculatorButton
                         btnStyle={styles.actionButtons}
                         btnText={"-"}
-                        onTouchablePressed={() => console.log("Button - has pressed")}
+                        onTouchablePressed={() => addSymbol("-")}
                     />
                     <СalculatorButton
                         btnStyle={styles.actionButtons}
                         btnText={"*"}
-                        onTouchablePressed={() => console.log("Button * has pressed")}
+                        onTouchablePressed={() => addSymbol("*")}
                     />
                     <СalculatorButton
                         btnStyle={styles.actionButtons}
                         btnText={"/"}
-                        onTouchablePressed={() => console.log("Button / has pressed")}
+                        onTouchablePressed={() => addSymbol("/")}
                     />
                     <СalculatorButton
                         btnStyle={styles.resultButtons}
                         btnText={"="}
-                        onTouchablePressed={() => console.log("Button = has pressed")}
+                        onTouchablePressed={() => calculate("=")}
                     />
                     <СalculatorButton
                         btnStyle={styles.resultButtons}
                         btnText={"CE"}
-                        onTouchablePressed={() => console.log("Button CE has pressed")}
+                        onTouchablePressed={() => clearCalculationLine("CE")}
                     />
                     <СalculatorButton
                         btnStyle={styles.unavailableButtons}
@@ -111,6 +137,7 @@ const Calculator = () => {
                     />
                 </View>
             </View>
+            <Text onPress={() => setErrorMessage("")}>{errorMessage}</Text>
         </View>
     );
 };
@@ -120,12 +147,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 1,
-        borderColor: "#000",
-        maxWidth: 300,
-        marginLeft: "auto",
-        marginRight: "auto"
+        justifyContent: "center"
     },
     buttons: {
         flexDirection: "row",
